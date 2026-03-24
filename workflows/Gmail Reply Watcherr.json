@@ -1,0 +1,299 @@
+{
+  "name": "Gmail Reply Watcherr",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -768,
+        -32
+      ],
+      "id": "5a0837ef-7af8-46f9-bc1e-8bec87b6ea20",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "filters": {
+          "labelIds": [
+            "INBOX"
+          ],
+          "q": "subject:Re:",
+          "readStatus": "unread"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -608,
+        -32
+      ],
+      "id": "b9e5c2b1-7d7c-4a2c-8fcc-372bbab88b7e",
+      "name": "Get many messages",
+      "webhookId": "66c16254-3c09-4f18-8fd6-13875ecde07c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ABmlQURhD7Fb5O26",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const emails = $input.all();\n\nconst replies = emails.filter(item => {\n  const subject = item.json.Subject || '';\n  const from = item.json.From || '';\n\n  // Must be a reply (starts with Re:)\n  const isReply = subject.toLowerCase().startsWith('re:');\n\n  // Must not be from yourself\n  const notFromSelf = !from.includes('ai.engrfaraharooj@gmail.com');\n\n  return isReply && notFromSelf;\n});\n\nreturn replies.map(item => ({ json: item.json }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        -32
+      ],
+      "id": "7d647550-9503-4610-ad67-245d9ebf7ad9",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "operation": "search",
+        "filterGroupsUi": {
+          "filterGroupsValues": [
+            {
+              "filtersUi": {
+                "filterValues": [
+                  {
+                    "propertyName": "email|string",
+                    "value": "={{ $json.From.match(/[\\w.-]+@[\\w.-]+/)[0] }}"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.2,
+      "position": [
+        -288,
+        -32
+      ],
+      "id": "a2164ff1-76cf-4fae-955a-0d980b72c45f",
+      "name": "Search contacts",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "EvL5yNewyyGRV5GF",
+          "name": "HubSpot App Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "bd09325f-b972-4aea-bee1-778689849b4f",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -144,
+        -32
+      ],
+      "id": "48af570d-aad4-421d-956d-ff615780481c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "email": "={{ $('Search contacts').first().json.properties.email }}\n",
+        "additionalFields": {
+          "leadStatus": "Replied"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.2,
+      "position": [
+        48,
+        -48
+      ],
+      "id": "28ee9d44-6ae4-45a7-9446-13dbba6cf1ef",
+      "name": "Create or update a contact",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "EvL5yNewyyGRV5GF",
+          "name": "HubSpot App Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "resource": "engagement",
+        "type": "task",
+        "dueDate": "={{ new Date().toLocaleDateString('en-GB') }}",
+        "metadata": {
+          "body": "=Lead replied on {{ new Date().toLocaleDateString('en-GB') }}  Subject: {{ $('Get many messages').first().json.Subject }}  Reply preview: {{ $('Get many messages').first().json.snippet }}  --- "
+        },
+        "additionalFields": {
+          "associations": {
+            "contactIds": "={{ $('Search contacts').first().json.id }}"
+          }
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.2,
+      "position": [
+        224,
+        -48
+      ],
+      "id": "d587cc46-ae3f-46e0-baa6-13b7f17ccbd1",
+      "name": "Create an engagement",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "EvL5yNewyyGRV5GF",
+          "name": "HubSpot App Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $('Get many messages').first().json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        -48
+      ],
+      "id": "c7c21b72-dfbb-4042-a2de-825493a6b355",
+      "name": "Mark a message as read",
+      "webhookId": "97365bdc-aafd-4757-aaa7-6f2d74103b20",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ABmlQURhD7Fb5O26",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get many messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Search contacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search contacts": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Create or update a contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create or update a contact": {
+      "main": [
+        [
+          {
+            "node": "Create an engagement",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an engagement": {
+      "main": [
+        [
+          {
+            "node": "Mark a message as read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "availableInMCP": false
+  },
+  "versionId": "2f6988cf-86a0-4fbb-9639-bf155bdf78b6",
+  "meta": {
+    "instanceId": "1922d3ff6938f14d3f7fcc0eb3474beb235a40b3806949b5fef1e1eaaf39e2fd"
+  },
+  "id": "boUvNW7LmCuRdFpR",
+  "tags": []
+}

@@ -1,0 +1,1159 @@
+{
+  "name": "Lead Qualification Flow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "13d9c9e3-8925-407d-91f6-99aa719a7e80",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1568,
+        -144
+      ],
+      "id": "9fc1e0bc-9709-4162-b7cf-0ae62a749f83",
+      "name": "Webhook",
+      "webhookId": "13d9c9e3-8925-407d-91f6-99aa719a7e80"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "67548d33-3818-48ec-a7bb-9924179927e9",
+              "name": "full_name",
+              "value": "={{ $json.body.data.fields[0].value }}",
+              "type": "string"
+            },
+            {
+              "id": "daca3115-e91b-4f0d-a12c-c9a13af7275c",
+              "name": "email",
+              "value": "={{ $json.body.data.fields[1].value }}",
+              "type": "string"
+            },
+            {
+              "id": "a093ac9b-82fe-4bc2-b604-02205dd9fab2",
+              "name": "company",
+              "value": "={{ $json.body.data.fields[2].value }}",
+              "type": "string"
+            },
+            {
+              "id": "8928c9d2-e3e0-4bdf-8c17-eb3dd5db2974",
+              "name": "job_title",
+              "value": "={{ $json.body.data.fields[3].value }}",
+              "type": "string"
+            },
+            {
+              "id": "36c1ef01-8202-4f14-a486-0e82c7d9ea15",
+              "name": "company_size",
+              "value": "={{ $json.body.data.fields[4].options.find(o => o.id === $json.body.data.fields[4].value[0]).text }}",
+              "type": "string"
+            },
+            {
+              "id": "48ddd221-90e6-4aad-bc47-13b9c669d246",
+              "name": "website",
+              "value": "={{ $json.body.data.fields[5].value }}",
+              "type": "string"
+            },
+            {
+              "id": "7aa42d7b-b61f-412f-86ac-749a9d46d559",
+              "name": "message",
+              "value": "={{ $json.body.data.fields[6].value }}",
+              "type": "string"
+            },
+            {
+              "id": "4d5fee18-841c-439e-8a0f-3df1db7c9639",
+              "name": "budget",
+              "value": "={{ $json.body.data.fields[7].options.find(o => o.id === $json.body.data.fields[7].value[0]).text }}",
+              "type": "string"
+            },
+            {
+              "id": "96503a09-85fd-4acb-adf6-8e2d46d886fe",
+              "name": "timeline",
+              "value": "={{ $json.body.data.fields[8].options.find(o => o.id === $json.body.data.fields[8].value[0]).text }}",
+              "type": "string"
+            },
+            {
+              "id": "abcc05b5-4466-4eb2-9b6b-081b2c8165f7",
+              "name": "how_found",
+              "value": "={{ $json.body.data.fields[9].value }}",
+              "type": "string"
+            },
+            {
+              "id": "a26b5339-2890-4633-9c0c-8f8bccf1b175",
+              "name": "timestamp",
+              "value": "={{ new Date().toISOString() }}",
+              "type": "string"
+            },
+            {
+              "id": "782ea3eb-4bdd-4b9d-bae2-d79f7d5053dd",
+              "name": "lead_status",
+              "value": "New",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1360,
+        -144
+      ],
+      "id": "c738c173-7fca-4e0f-872b-bd9860bb06fb",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1STNyN4LvJdEa1QeP0QsRd-j4P18bU8pNxizSvMBnwbQ",
+          "mode": "list",
+          "cachedResultName": "Lead Tracker ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1STNyN4LvJdEa1QeP0QsRd-j4P18bU8pNxizSvMBnwbQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1STNyN4LvJdEa1QeP0QsRd-j4P18bU8pNxizSvMBnwbQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Timestamp": "={{ $('Code in JavaScript').first().json.timestamp }}",
+            "Full Name": "={{ $('Code in JavaScript').first().json.full_name }}",
+            "Email": "={{ $('Code in JavaScript').first().json.email }}",
+            "Company": "={{ $('Code in JavaScript').first().json.company }}",
+            "Message": "={{ $('Code in JavaScript').first().json.message }}",
+            "Budget": "={{ $('Code in JavaScript').first().json.budget }}",
+            "Timeline": "={{ $('Code in JavaScript').first().json.timeline }}",
+            "Source": "={{ $('Code in JavaScript').first().json.how_found }}",
+            "Lead Status": "={{ $('Code in JavaScript').first().json.lead_status }}",
+            "ai_reason": "={{ $('Code in JavaScript').first().json.ai_reason }}",
+            "ai_intent": "={{ $('Code in JavaScript').first().json.ai_intent }}",
+            "ai_red_flags": "={{ $('Code in JavaScript').first().json.ai_red_flags }}",
+            "ai_email_tone": "={{ $('Code in JavaScript').first().json.ai_email_tone }}",
+            "ai_category": "={{ $('Code in JavaScript').first().json.ai_category }}",
+            "Job Title": "={{ $('Code in JavaScript').first().json.job_title }}",
+            "Company Size": "={{ $('Code in JavaScript').first().json.company_size }}",
+            "Website": "={{ $('Code in JavaScript').first().json.website }}",
+            "ai_score": "={{ $('Code in JavaScript').first().json.ai_score }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Full Name",
+              "displayName": "Full Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Job Title",
+              "displayName": "Job Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Company Size",
+              "displayName": "Company Size",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Budget",
+              "displayName": "Budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timeline",
+              "displayName": "Timeline",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Lead Status",
+              "displayName": "Lead Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ai_score",
+              "displayName": "ai_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ai_category",
+              "displayName": "ai_category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ai_reason",
+              "displayName": "ai_reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ai_intent",
+              "displayName": "ai_intent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ai_red_flags",
+              "displayName": "ai_red_flags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ai_email_tone",
+              "displayName": "ai_email_tone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -560,
+        -144
+      ],
+      "id": "aad7215c-1e09-4ec1-a5fc-839ffc61cb98",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "E7qPnbEdEuRVlYrs",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AKCV4RA20",
+          "mode": "list",
+          "cachedResultName": "priority-lead-alerts"
+        },
+        "text": "=:bell: *PRIORITY LEAD — Score {{ $('Code in JavaScript').first().json.ai_score }}/10*\n\n*{{ $('Code in JavaScript').first().json.full_name }}* from *{{ $('Code in JavaScript').first().json.company }}*\n*Email:* {{ $('Code in JavaScript').first().json.email }}\n*Budget:* {{ $('Code in JavaScript').first().json.budget }}   |   *Timeline:* {{ $('Code in JavaScript').first().json.timeline }}\n\n*Intent:* {{ $('Code in JavaScript').first().json.ai_intent }}\n*Note:* {{ $('Code in JavaScript').first().json.ai_reason }}\n\n*Their message:*\n{{ $('Code in JavaScript').first().json.message }}\n\n:warning: *Red Flags:* {{ $('Code in JavaScript').first().json.ai_red_flags }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        -336,
+        -336
+      ],
+      "id": "58b018c1-97e1-49d6-be28-d0c2de14a2fd",
+      "name": "Send a message",
+      "webhookId": "e873ee54-2df4-48ee-855b-de7dd603e234",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "J68qyGfBiVj9RzZN",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=You are a lead qualification expert for a digital services agency.\nAnalyze the following lead form submission and return ONLY a valid JSON\nobject with no extra text, no markdown, no explanation.\n\nLead Data:\n- Name: {{ $('Edit Fields').first().json.full_name }}\n- Company: {{ $('Edit Fields').first().json.company }}\n- Job Title: {{ $('Edit Fields').first().json.job_title }}\n- Company Size: {{ $('Edit Fields').first().json.company_size }}\n- Website: {{ $('Edit Fields').first().json.website }}\n- Budget: {{ $('Edit Fields').first().json.budget }}\n- Timeline: {{ $('Edit Fields').first().json.timeline }}\n- Message: {{ $('Edit Fields').first().json.message }}\n- Source: {{ $('Edit Fields').first().json.how_found }}\n\nReturn this exact JSON structure:\n{\n  \"score\": <number 1-10>,\n  \"category\": \"<Hot | Warm | Cold | Spam>\",\n  \"reason\": \"<one sentence why this score>\",\n  \"intent\": \"<what they actually want in 5 words max>\",\n  \"red_flags\": \"<any concerns or empty string>\",\n  \"email_tone\": \"<Professional | Friendly | Cautious>\"\n}\n\nScoring rules:\n- 8-10: Clear budget $2000+, urgent timeline, specific detailed request\n- 5-7: Some budget signal, reasonable timeline, somewhat clear need\n- 2-4: Vague request, no budget, just exploring\n- 1: Spam indicators, nonsense, or abusive content"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        -1152,
+        -352
+      ],
+      "id": "23b148e3-7e38-408b-a395-b433b0bc1975",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "oUdFSoZO8LwptpEg",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.item.json;\nconst rawText = response.output[0].content[0].text;\n\n// Remove any accidental markdown formatting\nconst cleaned = rawText.replace(/```json|```/g, '').trim();\n\n// Parse JSON\nconst ai = JSON.parse(cleaned);\n\n// Return merged data\nreturn [{\n  json: {\n    full_name: $('Edit Fields').item.json.full_name,\n    email: $('Edit Fields').item.json.email,\n    company: $('Edit Fields').item.json.company,\n    job_title: $('Edit Fields').item.json.job_title,\n    company_size: $('Edit Fields').item.json.company_size,\n    website: $('Edit Fields').item.json.website,\n    message: $('Edit Fields').item.json.message,\n    budget: $('Edit Fields').item.json.budget,\n    timeline: $('Edit Fields').item.json.timeline,\n    how_found: $('Edit Fields').item.json.how_found,\n    timestamp: $('Edit Fields').item.json.timestamp,\n    lead_status: $('Edit Fields').item.json.lead_status,\n    ai_score: ai.score,\n    ai_category: ai.category,\n    ai_reason: ai.reason,\n    ai_intent: ai.intent,\n    ai_red_flags: ai.red_flags,\n    ai_email_tone: ai.email_tone\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1136,
+        -128
+      ],
+      "id": "73481988-ab56-4230-b261-5736558dcc06",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "8c7ed3c5-8dda-48c1-8efe-bb07091bdd72",
+              "leftValue": "={{ $('Code in JavaScript').first().json.ai_score }}",
+              "rightValue": 7,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -352,
+        -160
+      ],
+      "id": "65864957-5498-4ae7-a039-9026118472a0",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AKNPT481E",
+          "mode": "list",
+          "cachedResultName": "lead-alerts"
+        },
+        "text": "=:envelope: New lead received — Score {{ $('Code in JavaScript').first().json.ai_score }}/10*\n\n*{{ $('Code in JavaScript').first().json.full_name }}* from *{{ $('Code in JavaScript').first().json.company }}*\n*Email:* {{ $('Code in JavaScript').first().json.email }}\n*Budget:* {{ $('Code in JavaScript').first().json.budget }}   |   *Timeline:* {{ $('Code in JavaScript').first().json.timeline }}\n\n*Intent:* {{ $('Code in JavaScript').first().json.ai_intent }}\n*Note:* {{ $('Code in JavaScript').first().json.ai_reason }}\n\n*Their message:*\n{{ $('Code in JavaScript').first().json.message }}\n\n:warning: *Red Flags:* {{ $('Code in JavaScript').first().json.ai_red_flags }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        -176,
+        -144
+      ],
+      "id": "6c9fe1ee-b8c9-45a5-b4b5-2fe6e067ef94",
+      "name": "Send a message1",
+      "webhookId": "5c4cfcfb-e086-487e-8b5b-224f6b04e742",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "J68qyGfBiVj9RzZN",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=You are a professional client success manager at a digital agency.\nWrite a warm, personalized reply email to this lead inquiry.\n\nLead details:\n- Name: {{ $('Code in JavaScript').first().json.full_name }}\n- Company: {{ $('Code in JavaScript').first().json.company }}\n- What they need: {{ $('Code in JavaScript').first().json.message }}\n- AI intent summary: {{ $('Code in JavaScript').first().json.ai_intent }}\n- Tone to use: {{ $('Code in JavaScript').first().json.ai_email_tone }}\n\nRules for the email:\n- Address them by first name only\n- Reference SPECIFICALLY what they said they need\n- Do NOT mention AI, automation, or scoring systems\n- Do NOT refer to their company as if it's your own agency\n- Keep it under 150 words\n- End with a call-to-action suggesting a quick call or meeting to discuss the plan ahead\n- Do NOT ask what time works for them\n- End the email with this exact HTML sign off:\n<br><br>Regards,<br>Farah | AI Solutions Specialist\n\nReturn ONLY the email body text. No subject line. No extra commentary."
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        -176,
+        -336
+      ],
+      "id": "ee2d9e58-6dd8-4a41-9dfa-7709c12081ed",
+      "name": "Message a model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "BWI43FXK6id0Fi8C",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Code in JavaScript').first().json.email }}",
+        "subject": "=Re: Your inquiry — {{ $('Code in JavaScript').first().json.ai_intent }}",
+        "message": "={{ $json.output[0].content[0].text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        80,
+        -336
+      ],
+      "id": "086c8cdc-2564-4c04-918a-139f247c8f82",
+      "name": "Send a message2",
+      "webhookId": "e91d93bb-0312-4f61-87d7-41cb8c91b48f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ABmlQURhD7Fb5O26",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=You are a professional client success manager at a digital agency.\nWrite a warm reply email to this lead inquiry.\n\nLead details:\n- Name: {{ $('Code in JavaScript').item.json.full_name }}\n- Company: {{ $('Code in JavaScript').item.json.company }}\n- What they need: {{ $('Code in JavaScript').item.json.message }}\n- AI intent summary: {{ $('Code in JavaScript').item.json.ai_intent }}\n- Tone to use: {{ $('Code in JavaScript').item.json.ai_email_tone }}\nRules for the email:\n- Address them by first name only\n- Keep it friendly\n- Reference SPECIFICALLY what they said they need\n- Do NOT mention AI, automation, or scoring systems\n- Do NOT refer to their company as if it's your own agency\n- Keep it under 150 words\n- End with a call-to-action suggesting a quick call or meeting to discuss the plan ahead\n- Do NOT ask what time works for them\n- End the email with this exact HTML sign off:\n<br><br>Regards,<br>Farah | AI Solutions Specialist\nReturn ONLY the email body text. No subject line. No extra commentary."
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        -32,
+        -144
+      ],
+      "id": "b3295000-6964-49b8-8995-2ed394feeca4",
+      "name": "Message a model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "BWI43FXK6id0Fi8C",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Code in JavaScript').first().json.email }}",
+        "subject": "=Re: Your inquiry — {{ $('Code in JavaScript').first().json.ai_intent }}",
+        "message": "={{ $json.output[0].content[0].text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -64,
+        80
+      ],
+      "id": "418718d4-9aeb-4c8b-ac85-2c687f7fd2a9",
+      "name": "Send a message3",
+      "webhookId": "1062086c-2219-4944-a959-3188ee6dc4da",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ABmlQURhD7Fb5O26",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=You are a filter for a digital agency that specializes exclusively in AI solutions and automation systems.\n\nAnalyze this inquiry and return ONLY a valid JSON object with no extra text, no markdown, no explanation.\n\nInquiry: {{ $('Edit Fields').first().json.message }}\nCompany: {{ $('Edit Fields').first().json.company }}\n\nReturn exactly this structure:\n{\n  \"relevant\": true,\n  \"reason\": \"one sentence explanation\"\n}\n\nReturn true ONLY if the inquiry is related to AI, artificial intelligence, or automation.\nReturn false if the request is about anything else such as web design, marketing, accounting, or anything unrelated to AI and automation."
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        -1504,
+        208
+      ],
+      "id": "a53d520c-8661-4933-b8a4-fa5133a486b3",
+      "name": "Message a model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "BWI43FXK6id0Fi8C",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.item.json;\nconst rawText = response.output[0].content[0].text;\nconst cleaned = rawText.replace(/```json|```/g, '').trim();\nconst result = JSON.parse(cleaned);\n\nreturn [{\n  json: {\n    ...($('Edit Fields').first().json),\n    is_relevant: result.relevant,\n    filter_reason: result.reason\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1184,
+        208
+      ],
+      "id": "3acb9bb7-d495-4b21-a012-74dcaf64b169",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "6c1fb707-d0e7-44be-9880-a7556a3b6fe6",
+              "leftValue": "={{ $json.is_relevant }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -960,
+        208
+      ],
+      "id": "902b9f5a-a69b-4daa-bc25-8ec5df9486cd",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=You are a professional client success manager at a digital agency specializing in AI and automation.\n\nWrite a short, warm, and polite reply to someone who has inquired about something outside our services.\n\nLead details:\n- Name: {{ $('Edit Fields').first().json.full_name }}\n- Their inquiry: {{ $('Edit Fields').first().json.message }}\n\nRules:\n- Address them by first name only\n- Acknowledge their inquiry politely\n- Kindly mention that we specialize in AI and automation only\n- Suggest they may find better help elsewhere for their specific need\n- Keep it under 100 words\n- Do NOT be dismissive or rude\n- End the email with this exact HTML sign off:\n<br><br>Regards,<br>Farah | AI Solutions Specialist\nReturn ONLY the email body text. No subject line. No extra commentary."
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        -688,
+        224
+      ],
+      "id": "e12e0291-b61f-4761-a203-e4e2a169efb6",
+      "name": "Message a model4",
+      "credentials": {
+        "openAiApi": {
+          "id": "BWI43FXK6id0Fi8C",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Edit Fields').first().json.email }}",
+        "subject": "Re: Your inquiry",
+        "message": "={{ $json.output[0].content[0].text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -560,
+        448
+      ],
+      "id": "6407a347-91b7-48a5-8951-fdb85476c9ee",
+      "name": "Send a message4",
+      "webhookId": "3f5ee599-f151-4344-b3f2-bd2fb853f3cb",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ABmlQURhD7Fb5O26",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "email": "={{ $json.email }}",
+        "additionalFields": {
+          "companyName": "={{ $json.company }}",
+          "customPropertiesUi": {
+            "customPropertiesValues": [
+              {
+                "property": "ai_lead_score",
+                "value": "={{ $json.ai_score }}"
+              },
+              {
+                "property": "ai_category",
+                "value": "={{ $json.ai_category }}"
+              },
+              {
+                "property": "ai_intent",
+                "value": "={{ $json.ai_intent }}"
+              },
+              {
+                "property": "ai_reason",
+                "value": "={{ $json.ai_reason }}"
+              }
+            ]
+          },
+          "firstName": "={{ $json.full_name.split(' ')[0] }}",
+          "jobTitle": "={{ $json.job_title }}",
+          "lastName": "={{ $json.full_name.split(' ')[1] }}",
+          "leadStatus": "NEW",
+          "message": "={{ $json.message }}",
+          "websiteUrl": "={{ $json.website }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.2,
+      "position": [
+        -944,
+        -128
+      ],
+      "id": "15af7b10-6286-491d-a1f8-6e46d0ff0490",
+      "name": "Create or update a contact",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "EvL5yNewyyGRV5GF",
+          "name": "HubSpot App Token account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "286cf6b5-9389-43f3-9595-dda7a42f582e",
+              "name": "hubspot_status",
+              "value": "Failed — retry needed",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -752,
+        -48
+      ],
+      "id": "5171290c-2769-4167-988e-3769a6005185",
+      "name": "Edit Fields1"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "missnengr.app.n8n.cloud",
+            "user-agent": "Tally Webhooks",
+            "content-length": "1718",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, br",
+            "baggage": "sentry-environment=production,sentry-release=57ed43c1fff15b04473bbabaa581808423ef5e03,sentry-public_key=6af4b6673f1648edaa8fef3f2ca43405,sentry-trace_id=a00a934adde46821fa206f0fc29d45ca,sentry-org_id=407628,sentry-sampled=false,sentry-sample_rand=0.6152696186899922,sentry-sample_rate=0",
+            "cdn-loop": "cloudflare; loops=1; subreqs=1",
+            "cf-connecting-ip": "34.96.62.163",
+            "cf-ew-via": "15",
+            "cf-ipcountry": "BE",
+            "cf-ray": "9d84f3173a800039-LHR",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "n8n.cloud",
+            "content-type": "application/json",
+            "sentry-trace": "a00a934adde46821fa206f0fc29d45ca-ec18e69208501a99-0",
+            "x-forwarded-for": "34.96.62.163, 172.71.178.126",
+            "x-forwarded-host": "missnengr.app.n8n.cloud",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik-prod-users-gwc-31-55446f5479-psx8w",
+            "x-is-trusted": "yes",
+            "x-real-ip": "34.96.62.163"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "eventId": "bb0461f6-6837-4807-a714-5e8bd208f2bc",
+            "eventType": "FORM_RESPONSE",
+            "createdAt": "2026-03-06T22:55:43.169Z",
+            "data": {
+              "responseId": "Me9W5MX",
+              "submissionId": "Me9W5MX",
+              "respondentId": "zxZE97M",
+              "formId": "GxrNY2",
+              "formName": "Lead Inquiry Form",
+              "createdAt": "2026-03-06T22:55:43.000Z",
+              "fields": [
+                {
+                  "key": "question_DVbzxR",
+                  "label": "Full Name",
+                  "type": "INPUT_TEXT",
+                  "value": "Phase2Test1"
+                },
+                {
+                  "key": "question_Alalq0",
+                  "label": "Email Address",
+                  "type": "INPUT_TEXT",
+                  "value": "faraharoojhafeezkhan@gmail.com"
+                },
+                {
+                  "key": "question_Rz2Pb9",
+                  "label": "Company Name",
+                  "type": "INPUT_TEXT",
+                  "value": "Comsats"
+                },
+                {
+                  "key": "question_oAgG5P",
+                  "label": "What do you need help with?",
+                  "type": "TEXTAREA",
+                  "value": "We need a full website redesign urgently, we have budget approved"
+                },
+                {
+                  "key": "question_GrklqZ",
+                  "label": "Estimated Budget",
+                  "type": "MULTIPLE_CHOICE",
+                  "value": [
+                    "acf83e9e-17a1-4803-9d03-8bec164e3da0"
+                  ],
+                  "options": [
+                    {
+                      "id": "55d370c1-d90c-46dd-8ac1-82d19c135501",
+                      "text": "under $500"
+                    },
+                    {
+                      "id": "2c48779f-2a30-422e-b0ee-9f177a08ca0b",
+                      "text": "$500-$2000"
+                    },
+                    {
+                      "id": "8352c470-0d8b-462c-bb44-3d9bd550f5b7",
+                      "text": "$2000-$5000"
+                    },
+                    {
+                      "id": "acf83e9e-17a1-4803-9d03-8bec164e3da0",
+                      "text": "$5000+"
+                    },
+                    {
+                      "id": "c97f70cd-4e2c-4ecf-a5b7-4c457401aed5",
+                      "text": "Not sure yet"
+                    }
+                  ]
+                },
+                {
+                  "key": "question_OArGbR",
+                  "label": "Timeline",
+                  "type": "MULTIPLE_CHOICE",
+                  "value": [
+                    "dc98fb1a-1b9d-4287-a693-e7f5b53bee28"
+                  ],
+                  "options": [
+                    {
+                      "id": "dc98fb1a-1b9d-4287-a693-e7f5b53bee28",
+                      "text": "ASAP(within 1 week)"
+                    },
+                    {
+                      "id": "7f5fc99d-e836-413f-8229-34111181466c",
+                      "text": "Within 1 month"
+                    },
+                    {
+                      "id": "f2ca9b2c-26a0-4ef1-aea2-e67fe4e10398",
+                      "text": "1-3 months"
+                    },
+                    {
+                      "id": "de710d5d-acb8-498d-917b-92f4ffe9d2e2",
+                      "text": "Just exploring"
+                    }
+                  ]
+                },
+                {
+                  "key": "question_VZqJbg",
+                  "label": "How did you find us?",
+                  "type": "INPUT_TEXT",
+                  "value": "Linkedin"
+                }
+              ]
+            }
+          },
+          "webhookUrl": "https://missnengr.app.n8n.cloud/webhook/13d9c9e3-8925-407d-91f6-99aa719a7e80",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Message a model3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Create or update a contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Message a model1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model1": {
+      "main": [
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Message a model2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model2": {
+      "main": [
+        [
+          {
+            "node": "Send a message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model3": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Message a model4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model4": {
+      "main": [
+        [
+          {
+            "node": "Send a message4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create or update a contact": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "a0dd8b43-fe07-424c-8453-5d0b797f164d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1922d3ff6938f14d3f7fcc0eb3474beb235a40b3806949b5fef1e1eaaf39e2fd"
+  },
+  "id": "Lf5T2eVhiepHHHto",
+  "tags": []
+}
