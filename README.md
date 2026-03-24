@@ -27,13 +27,11 @@ HubSpot CRM · Gmail · Slack · Google Sheets
 ## 📁 Repository Contents
 - `/prompts` — AI prompt templates (available to clients upon project delivery)
 - `/workflows` — n8n workflow JSON exports
-- `/docs` — Setup guide and architecture diagram
-
-## 🚀 Setup
-Coming soon — full setup guide will be added after project documentation is complete.
+- `/assets` — workflows.jpg(s)
 
 ## 📸 Demo
-Coming soon — Loom walkthrough will be added here.
+https://www.upwork.com/freelancers/~01aebffd4d10de4043?p=2033683278785581056
+
 ## 👩‍💻 Built By
 Farah — AI Engineer | n8n Automation | LLM Integration
-[LinkedIn] · [Upwork] · [Email]
+ [https://www.upwork.com/freelancers/~01aebffd4d10de4043?mp_source=share] · [ai.engrfaraharooj@gmail.com]
