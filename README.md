@@ -34,4 +34,5 @@ https://www.upwork.com/freelancers/~01aebffd4d10de4043?p=2033683278785581056
 
 ## 👩‍💻 Built By
 Farah — AI Engineer | n8n Automation | LLM Integration
+
  [https://www.upwork.com/freelancers/~01aebffd4d10de4043?mp_source=share] · [ai.engrfaraharooj@gmail.com]
